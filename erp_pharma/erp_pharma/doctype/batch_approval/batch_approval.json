@@ -1,0 +1,163 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "BA.-.YYYY.-.MM.-.DD.-.#######",
+ "creation": "2026-01-02 09:45:26.701364",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_vowm",
+  "amended_from",
+  "batch_planning",
+  "bom",
+  "work_order",
+  "column_break_zauc",
+  "number_of_batch",
+  "quantity",
+  "stock_entry",
+  "batch",
+  "section_break_in7b",
+  "item_code",
+  "column_break_mx6f",
+  "stock_avaiblity",
+  "section_break_lh2d",
+  "raw_materials",
+  "packing_materials"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_vowm",
+   "fieldtype": "Section Break",
+   "label": "Batch Details"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Batch Approval",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "batch_planning",
+   "fieldtype": "Link",
+   "label": "Batch Planning",
+   "options": "Batch Planning",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_zauc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "number_of_batch",
+   "fieldtype": "Int",
+   "label": "Number Of Batch",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_in7b",
+   "fieldtype": "Section Break",
+   "label": "Item Details"
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Item",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_mx6f",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "stock_avaiblity",
+   "fieldtype": "Button",
+   "label": "Check Stock Avaiblity"
+  },
+  {
+   "fieldname": "section_break_lh2d",
+   "fieldtype": "Section Break",
+   "label": "Raw and Packing Details"
+  },
+  {
+   "fieldname": "raw_materials",
+   "fieldtype": "Table",
+   "label": "Raw Materials",
+   "options": "Batch Raw Materials"
+  },
+  {
+   "fieldname": "packing_materials",
+   "fieldtype": "Table",
+   "label": "Packing Materials",
+   "options": "Batch Packing Materials"
+  },
+  {
+   "fieldname": "bom",
+   "fieldtype": "Link",
+   "label": "BOM",
+   "options": "BOM",
+   "read_only": 1
+  },
+  {
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "label": "Stock Entry",
+   "options": "Stock Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "batch",
+   "fieldtype": "Link",
+   "label": "Batch",
+   "options": "Batch",
+   "read_only": 1
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Float",
+   "label": "Quantity",
+   "read_only": 1
+  },
+  {
+   "fieldname": "work_order",
+   "fieldtype": "Link",
+   "label": "Work Order",
+   "options": "Work Order",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-01-07 12:17:57.183526",
+ "modified_by": "Administrator",
+ "module": "ERP Pharma",
+ "name": "Batch Approval",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

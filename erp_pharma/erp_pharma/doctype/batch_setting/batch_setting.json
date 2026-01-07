@@ -1,0 +1,82 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-01-02 09:41:36.435692",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_engq",
+  "rm_source_warehouse",
+  "temporary_warehouse",
+  "wip_warehouse",
+  "column_break_m6b2",
+  "pm_source_warehouse",
+  "finish_goods_warehouse"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_engq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "rm_source_warehouse",
+   "fieldtype": "Link",
+   "label": "RM Source Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "temporary_warehouse",
+   "fieldtype": "Link",
+   "label": "Temporary Transfer Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "column_break_m6b2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pm_source_warehouse",
+   "fieldtype": "Link",
+   "label": "PM Source Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "finish_goods_warehouse",
+   "fieldtype": "Link",
+   "label": "Finish Goods Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "wip_warehouse",
+   "fieldtype": "Link",
+   "label": "Work-in-Progress Warehouse",
+   "options": "Warehouse"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-01-07 13:25:17.854235",
+ "modified_by": "Administrator",
+ "module": "ERP Pharma",
+ "name": "Batch Setting",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
