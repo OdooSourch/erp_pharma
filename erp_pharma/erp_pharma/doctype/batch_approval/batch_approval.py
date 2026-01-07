@@ -71,7 +71,7 @@ class BatchApproval(Document):
 		wo = frappe.new_doc("Work Order")
 		wo.production_item = self.item_code
 		wo.bom_no = self.bom
-		wo.custom_stock_entry_type_reference = "Material Transfer" 
+		# wo.custom_stock_entry_type_reference = "Material Transfer"
 		wo.qty = self.quantity
 
 		for item in self.raw_materials:
