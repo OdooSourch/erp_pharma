@@ -23,6 +23,9 @@ class BatchApproval(Document):
 		for row in self.packing_materials:
 			if row.status == "Shortage":
 				frappe.throw(_("Packing Materials {} has a shortage status. Please address the shortage before submitting.".format(row.item_code)))
+		
+		if len(self.raw_materials) <= 0 or len(self.packing_materials):
+			frappe.throw("Please check the Stock and then proceed further..")
 
 	def create_stock_entry(self):
 		se = frappe.new_doc("Stock Entry")
