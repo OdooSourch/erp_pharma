@@ -30,11 +30,59 @@ frappe.ui.form.on("Batch planning Item", {
             },
             callback : function(r){
                 if (r.message && r.message.default_bom){
+
+                    let bom = r.message.default_bom;
+
                     frappe.model.set_value(cdt, cdn, "bom", r.message.default_bom);
+                    frappe.model.set_value(cdt, cdn, "number_of_batch", 1);
+
+                    frappe.call({
+                        method: "frappe.client.get_value",
+                        args: {
+                            doctype: "BOM",
+                            filters: {
+                                name: bom
+                            },
+                            fieldname: "quantity"
+                        },
+                        callback: function(res) {
+                            if (res.message) {
+                                frappe.model.set_value(cdt, cdn, "quantity", res.message.quantity);
+                            }
+                        }
+                    });
                 }else{
                     frappe.model.set_value(cdt, cdn, "bom", '');
                 }
             }
         })
+    },
+
+    number_of_batch : function(frm,cdt,cdn){
+        let row = locals[cdt][cdn];
+
+        if (row.bom) {
+            frappe.call({
+                method: "frappe.client.get_value",
+                args: {
+                    doctype: "BOM",
+                    filters: {
+                        name: row.bom
+                    },
+                    fieldname: "quantity"
+                },
+                callback: function(r) {
+
+                    if (r.message) {
+
+                        let bom_qty = r.message.quantity;
+                        let total_qty = bom_qty * row.number_of_batch;
+
+                        frappe.model.set_value(cdt, cdn, "quantity", total_qty);
+                    }
+                }
+            });
+
+        }
     }
 });
