@@ -21,12 +21,13 @@ class BatchPlanning(Document):
 
 			if remaining_batches_to_create > 0:
 				for i in range(number_of_batch):
+					qty = item.quantity / number_of_batch
 					batch_approval = frappe.new_doc("Batch Approval")
 					batch_approval.batch_planning = self.name
 					batch_approval.number_of_batch = int(1)
 					batch_approval.item_code = item.item_code
-					batch_approval.bom = item.bom
-					batch_approval.quantity = item.quantity
+					batch_approval.bom = item.bom	
+					batch_approval.quantity = qty #item.quantity
 					batch_approval.save(ignore_permissions=True)
 			else:
 				frappe.msgprint("All required Batch Approvals are already created")

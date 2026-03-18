@@ -130,20 +130,19 @@ app_license = "mit"
 # Override standard doctype classes
 
 override_doctype_class = {
-	"Batch" : "mantra.overrides.batch.CustomBatch"
+	"Batch" : "erp_pharma.overrides.batch.CustomBatch"
 }
 
 # Document Events
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	"Work Order": {
+		"before_submit": "erp_pharma.overrides.work_order.before_submit"
+	}
+}
+
 
 # Scheduled Tasks
 # ---------------

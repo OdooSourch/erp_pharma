@@ -54,3 +54,17 @@ def make_stock_entry(work_order_id, purpose, qty=None, target_warehouse=None):
 		stock_entry.set_serial_no_batch_for_finished_good()
 
 	return stock_entry.as_dict()
+
+@frappe.whitelist()
+def before_submit(doc,method=None):
+
+	existing_items = [d.item_code for d in doc.required_items]
+	
+	for row in doc.custom_extra_items:
+		if row.item_code not in existing_items:
+			doc.append("required_items", {
+				"item_code": row.item_code,
+				"required_qty": row.required_qty,
+				"source_warehouse": row.source_warehouse,
+				"stock_uom" : row.stock_uom
+			})

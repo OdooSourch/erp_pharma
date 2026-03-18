@@ -16,7 +16,6 @@ frappe.ui.form.on("Batch Planning", {
 
 frappe.ui.form.on("Batch planning Item", {
 	item_code : function(frm, cdt, cdn){
-        console.log("Hello");
         let row = locals[cdt][cdn];
 
         frappe.call({
@@ -43,11 +42,12 @@ frappe.ui.form.on("Batch planning Item", {
                             filters: {
                                 name: bom
                             },
-                            fieldname: "quantity"
+                            fieldname: "custom_quantiity_kg"
                         },
                         callback: function(res) {
                             if (res.message) {
-                                frappe.model.set_value(cdt, cdn, "quantity", res.message.quantity);
+                                console.log(res.message.custom_quantiity_kg)
+                                frappe.model.set_value(cdt, cdn, "quantity", res.message.custom_quantiity_kg);
                             }
                         }
                     });
@@ -69,13 +69,13 @@ frappe.ui.form.on("Batch planning Item", {
                     filters: {
                         name: row.bom
                     },
-                    fieldname: "quantity"
+                    fieldname: "custom_quantiity_kg"
                 },
                 callback: function(r) {
 
                     if (r.message) {
 
-                        let bom_qty = r.message.quantity;
+                        let bom_qty = r.message.custom_quantiity_kg;
                         let total_qty = bom_qty * row.number_of_batch;
 
                         frappe.model.set_value(cdt, cdn, "quantity", total_qty);
