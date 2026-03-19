@@ -46,7 +46,6 @@ frappe.ui.form.on("Batch planning Item", {
                         },
                         callback: function(res) {
                             if (res.message) {
-                                console.log(res.message.custom_quantiity_kg)
                                 frappe.model.set_value(cdt, cdn, "quantity", res.message.custom_qty_in_kg);
                             }
                         }
