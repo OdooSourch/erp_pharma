@@ -42,6 +42,22 @@ def make_stock_entry(work_order_id, purpose, qty=None, target_warehouse=None):
 
 	stock_entry.set_stock_entry_type()
 	stock_entry.get_items()
+
+	required_items = work_order.required_items
+	existing_items = [d.item_code for d in stock_entry.items]
+
+	for req in required_items:
+		if req.item_code not in existing_items:
+			stock_entry.append("items", {
+				"item_code": req.item_code,
+				"s_warehouse": req.source_warehouse,
+				"t_warehouse" : work_order.wip_warehouse,
+				"uom" : req.stock_uom,
+				"stock_uom" : req.stock_uom,	
+				"qty": req.required_qty,
+				'cost_center' : frappe.db.get_value("Company", work_order.company, "cost_center")
+			})
+	
 	for item in stock_entry.items:
 		if item.is_finished_item:
 			item.use_serial_batch_fields = 1

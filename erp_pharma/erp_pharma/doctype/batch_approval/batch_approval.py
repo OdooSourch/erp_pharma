@@ -82,7 +82,7 @@ class BatchApproval(Document):
 				'item_code' : item.item_code,
 				'source_warehouse' : frappe.db.get_single_value("Batch Setting",'temporary_warehouse'),
 				'required_qty' : item.qty,
-				'include_item_in_manufacturing' : 1
+				'include_item_in_manufacturing' : 1,
 			})
 		
 		for item in self.packing_materials:
@@ -90,7 +90,7 @@ class BatchApproval(Document):
 				'item_code' : item.item_code,
 				'source_warehouse' : frappe.db.get_single_value("Batch Setting",'temporary_warehouse'),
 				'required_qty' : item.qty,
-				'include_item_in_manufacturing' : 1
+				'include_item_in_manufacturing' : 1,
 			})
 		
 		wo.source_warehouse = frappe.db.get_single_value("Batch Setting",'temporary_warehouse')
@@ -98,7 +98,7 @@ class BatchApproval(Document):
 		wo.wip_warehouse = frappe.db.get_single_value("Batch Setting",'wip_warehouse')
 
 		wo.save(ignore_permissions=True)
-		wo.submit()
+		# wo.submit()
 
 		update_query = """UPDATE `tabBatch Approval` SET `work_order`=%s WHERE `name`=%s"""
 		frappe.db.sql(update_query, (wo.name,self.name))
@@ -168,7 +168,7 @@ def check_stock_avaiblity(docname=None):
 						item.qty = total_qty
 						item.item_name = rmpk.item_name
 						item.stock_qty = stock_qty
-						item.status = 'Present' if stock_qty >= qty else 'Shortage'
+						item.status = 'Present' if stock_qty >= total_qty else 'Shortage'
 						item_exists = True
 						break
 				if not item_exists:
@@ -177,7 +177,7 @@ def check_stock_avaiblity(docname=None):
 						'item_name' : rmpk.item_name,
 						'stock_qty' : stock_qty,
 						'qty' : total_qty,
-						'status' : 'Present' if stock_qty >= qty else 'Shortage',
+						'status': 'Present' if stock_qty >= total_qty else 'Shortage',
 					})
 			else:
 				item_exists = False
@@ -186,7 +186,7 @@ def check_stock_avaiblity(docname=None):
 						item.qty = total_qty
 						item.item_name = rmpk.item_name
 						item.stock_qty = stock_qty
-						item.status = 'Present' if stock_qty >= qty else 'Shortage'
+						item.status = 'Present' if stock_qty >= total_qty else 'Shortage'
 						item_exists = True
 						break
 				if not item_exists:
@@ -195,7 +195,7 @@ def check_stock_avaiblity(docname=None):
 						'item_name' : rmpk.item_name,
 						'stock_qty' : stock_qty,
 						'qty' : total_qty,
-						'status' : 'Present' if stock_qty >= qty else 'Shortage',
+						'status': 'Present' if stock_qty >= total_qty else 'Shortage',
 					})
 		doc.save()
 	reply['message'] = "Data Fetched Successfully!"

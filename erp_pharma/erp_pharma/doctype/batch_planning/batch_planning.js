@@ -42,12 +42,12 @@ frappe.ui.form.on("Batch planning Item", {
                             filters: {
                                 name: bom
                             },
-                            fieldname: "custom_quantiity_kg"
+                            fieldname: "custom_qty_in_kg"
                         },
                         callback: function(res) {
                             if (res.message) {
                                 console.log(res.message.custom_quantiity_kg)
-                                frappe.model.set_value(cdt, cdn, "quantity", res.message.custom_quantiity_kg);
+                                frappe.model.set_value(cdt, cdn, "quantity", res.message.custom_qty_in_kg);
                             }
                         }
                     });
@@ -69,13 +69,13 @@ frappe.ui.form.on("Batch planning Item", {
                     filters: {
                         name: row.bom
                     },
-                    fieldname: "custom_quantiity_kg"
+                    fieldname: "custom_qty_in_kg"
                 },
                 callback: function(r) {
 
                     if (r.message) {
 
-                        let bom_qty = r.message.custom_quantiity_kg;
+                        let bom_qty = r.message.custom_qty_in_kg;
                         let total_qty = bom_qty * row.number_of_batch;
 
                         frappe.model.set_value(cdt, cdn, "quantity", total_qty);
