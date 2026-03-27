@@ -22,7 +22,8 @@
   "stock_avaiblity",
   "section_break_lh2d",
   "raw_materials",
-  "packing_materials"
+  "packing_materials",
+  "extra_item"
  ],
  "fields": [
   {
@@ -128,17 +129,23 @@
    "label": "Work Order",
    "options": "Work Order",
    "read_only": 1
+  },
+  {
+   "fieldname": "extra_item",
+   "fieldtype": "Table",
+   "label": "Extra Item",
+   "options": "Extra Items"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-07 12:17:57.183526",
+ "modified": "2026-03-27 09:44:43.716228",
  "modified_by": "Administrator",
  "module": "ERP Pharma",
  "name": "Batch Approval",
- "naming_rule": "Expression (old style)",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

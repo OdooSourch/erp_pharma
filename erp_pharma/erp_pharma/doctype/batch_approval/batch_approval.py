@@ -16,13 +16,54 @@ class BatchApproval(Document):
 		self.create_work_order()
 	
 	def validate_shortage_qty(self):
+
+		shortage_data = {
+			"Raw Materials": [],
+			"Packing Materials": [],
+			"Extra Items": []
+		}
+
 		for row in self.raw_materials:
 			if row.status == "Shortage":
-				frappe.throw(_("Raw Material {} has a shortage status. Please address the shortage before submitting.".format(row.item_code)))
+				shortage_data["Raw Materials"].append((row.idx, row.item_code,row.qty,row.stock_qty))
 		
 		for row in self.packing_materials:
 			if row.status == "Shortage":
-				frappe.throw(_("Packing Materials {} has a shortage status. Please address the shortage before submitting.".format(row.item_code)))
+				shortage_data["Packing Materials"].append((row.idx, row.item_code,row.qty,row.stock_qty))
+		
+		for row in self.extra_item:
+			if row.status == "Shortage":
+				shortage_data["Extra Items"].append((row.idx, row.item_code,row.qty,row.stock_qty))
+		
+		if any(shortage_data.values()):
+			html = """<h4>Stock Shortage Details</h4>"""
+
+			for table_name, items in shortage_data.items():
+				if items:
+					html += f"""
+					<h5>{table_name}</h5>
+					<table border="1" style="border-collapse: collapse; width: 100%;">
+						<tr>
+							<th style="padding:5px;">Row No</th>
+							<th style="padding:5px;">Item Code</th>
+							<th style="padding:5px;">Quantity</th>
+							<th style="padding:5px;">Stock Quantity</th>
+						</tr>
+					"""
+
+					for idx,item,qty,stock_qty in items:
+						html += f"""
+						<tr>
+							<td style="padding:5px; text-align:center;">{idx}</td>
+							<td style="padding:5px;">{item}</td>
+							<td style="padding:5px;">{qty}</td>
+							<td style="padding:5px;">{stock_qty}</td>
+						</tr>
+						"""
+
+					html += "</table><br>"
+
+			frappe.throw(html)
 		
 		if len(self.raw_materials) <= 0 or len(self.packing_materials):
 			frappe.throw("Please check the Stock and then proceed further..")
@@ -48,6 +89,15 @@ class BatchApproval(Document):
 				'item_code' : pitem.item_code,
 				'item_name' : pitem.item_name,
 				'qty' : pitem.qty
+			})
+		
+		for extra in self.extra_item:
+			se.append("items",{
+				's_warehouse' : frappe.db.get_single_value("Batch Setting",'rm_source_warehouse'),
+				't_warehouse' : frappe.db.get_single_value("Batch Setting",'temporary_warehouse'),
+				'item_code' : extra.item_code,
+				'item_name' : extra.item_name,
+				'qty' : extra.qty
 			})
 		
 		se.save(ignore_permissions=True)
@@ -90,6 +140,14 @@ class BatchApproval(Document):
 				'item_code' : item.item_code,
 				'source_warehouse' : frappe.db.get_single_value("Batch Setting",'temporary_warehouse'),
 				'required_qty' : item.qty,
+				'include_item_in_manufacturing' : 1,
+			})
+		
+		for extra in self.extra_item:
+			wo.append("required_items",{
+				'item_code' : extra.item_code,
+				'source_warehouse' : frappe.db.get_single_value("Batch Setting",'temporary_warehouse'),
+				'required_qty' : extra.qty,
 				'include_item_in_manufacturing' : 1,
 			})
 		
