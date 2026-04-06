@@ -71,7 +71,7 @@ frappe.ui.form.on('Material Request', {
                                     <td>${po_item.po_qty}</td>
                                     <td>${po_item.received_qty}</td>
                                     <td>${pending}</td>
-                                    <td>${formatDate(po.schedule_date)}</td>
+                                    <td>${formatDate(po.transaction_date)}</td>
                                 </tr>
                             `;
 
