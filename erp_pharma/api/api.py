@@ -36,6 +36,7 @@ def get_purchase_data(docname=None, supplier=None):
 
             poi.name AS po_item,
             poi.item_code,
+            poi.item_name,
             poi.qty AS po_qty,
             poi.received_qty,
 
@@ -111,6 +112,7 @@ def get_purchase_data(docname=None, supplier=None):
         if not po_item:
             po_item = {
                 "item_code": row["item_code"],
+                "item_name" : row['item_name'],
                 "po_qty": row["po_qty"],
                 "received_qty": row["received_qty"],
                 "remaining_to_receive": (row["po_qty"] or 0) - (row["received_qty"] or 0),
