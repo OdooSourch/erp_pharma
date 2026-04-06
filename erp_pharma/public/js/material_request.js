@@ -1,6 +1,6 @@
 frappe.ui.form.on('Material Request', {
     custom_purchase_details : function(frm){
-        if(!frm.doc.name){
+        if(frm.is_new()){
             frappe.msgprint("Please save the document before showing the purchase details")
             return
         }
