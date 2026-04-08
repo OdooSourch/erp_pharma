@@ -82,7 +82,6 @@ frappe.ui.form.on('Material Request', {
                     });
                 });
 
-                // Footer Total Row (like screenshot)
                 html += `
                         </tbody>
                         <tfoot>

@@ -1,6 +1,8 @@
 import frappe
-    
-@frappe.whitelist(allow_guest=True)
+
+
+#Material Request Purchase Order Details
+@frappe.whitelist()
 def get_purchase_data(docname=None, supplier=None):
 
     reply = {}
@@ -160,3 +162,51 @@ def get_purchase_data(docname=None, supplier=None):
     reply["data"] = mr_structure
 
     return reply
+
+
+#Workflow Approval Conditions
+@frappe.whitelist()
+def get_purchase_value_for_supplier(docname=None):
+
+    reply = {}
+    reply['message'] = ''
+
+    if not docname:
+        reply['message'] = "Please save the document first and then further process.."
+        return reply
+
+    doc = frappe.get_doc("Purchase Order", docname)
+
+    if not doc.supplier:
+        reply['message'] = "Supplier Not found.."
+        return reply
+
+    query = """
+        SELECT name, grand_total
+        FROM `tabPurchase Order`
+        WHERE supplier = %s
+          AND name != %s
+          AND docstatus = 0
+        ORDER BY transaction_date DESC
+        LIMIT 3
+    """
+
+    results = frappe.db.sql(query, (doc.supplier, doc.name), as_dict=True)
+
+    total_value = sum(row.grand_total for row in results)
+
+    allow_management = False
+    if doc.grand_total >= 2500000:
+        allow_management = True
+
+    for row in results:
+        if row.grand_total >= 2500000:
+            allow_management = True
+            break
+
+    return {
+        "message": "Success",
+        "purchase_orders": results,
+        "total_value": total_value,
+        "allow_management" : allow_management
+    }
