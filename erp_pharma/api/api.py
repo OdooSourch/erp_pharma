@@ -188,21 +188,15 @@ def get_purchase_value_for_supplier(docname=None):
           AND name != %s
           AND docstatus = 0
         ORDER BY transaction_date DESC
-        LIMIT 3
+        LIMIT 2
     """
 
     results = frappe.db.sql(query, (doc.supplier, doc.name), as_dict=True)
+    current_value = doc.grand_total or 0
+    
+    total_value = current_value + sum(row.grand_total for row in results)
 
-    total_value = sum(row.grand_total for row in results)
-
-    allow_management = False
-    if doc.grand_total >= 2500000:
-        allow_management = True
-
-    for row in results:
-        if row.grand_total >= 2500000:
-            allow_management = True
-            break
+    allow_management = total_value >= 2500000
 
     return {
         "message": "Success",
