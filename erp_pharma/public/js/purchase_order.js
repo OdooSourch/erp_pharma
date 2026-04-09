@@ -49,5 +49,20 @@ frappe.ui.form.on('Purchase Order', {
                 });
             }
         });
+
+        if(frm.doc.custom_tat_violation){
+            frm.disable_form();
+            setTimeout(() => {
+                frm.page.clear_actions_menu();
+                frm.page.clear_menu();
+                frm.clear_custom_buttons();
+
+                if (frm.page.btn_primary) {
+                    frm.page.btn_primary.hide();
+                }
+                $('.workflow-button-group').hide();
+                $('.btn-workflow').hide();
+            }, 200);
+        }
     }
 })

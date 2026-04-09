@@ -1,5 +1,5 @@
 import frappe
-
+from datetime import datetime,timedelta
 
 #Material Request Purchase Order Details
 @frappe.whitelist()
@@ -204,3 +204,31 @@ def get_purchase_value_for_supplier(docname=None):
         "total_value": total_value,
         "allow_management" : allow_management
     }
+
+
+#Cron to check the purchase order time and hold on it.
+@frappe.whitelist()
+def cron_purchase_order():
+    reply = {}
+    reply['message'] = ""
+
+    try:
+        query = "SELECT name, creation FROM `tabPurchase Order` WHERE docstatus = 0 "
+        results = frappe.db.sql(query,as_dict=True)
+        if results:
+            for po in results:
+                creation_time = po['creation']
+                if creation_time:
+                    creation_time_obj = datetime.strptime(str(creation_time), "%Y-%m-%d %H:%M:%S.%f")
+                    current_time_obj = datetime.now()
+                    time_difference = current_time_obj - creation_time_obj
+                    if time_difference > timedelta(hours=24):
+                        frappe.log_error("Purchase Order",po['name'])
+                        frappe.db.sql("""
+                            UPDATE `tabPurchase Order`
+                            SET `custom_tat_violation` = 1
+                            WHERE `name` = %s 
+                        """, (po['name']))
+                        frappe.db.commit()
+    except Exception as e:
+        frappe.log_error(str(e), "Cron Purchase Order Error")
