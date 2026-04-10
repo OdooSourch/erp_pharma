@@ -3,8 +3,9 @@
 
 frappe.ui.form.on("ERP Setting", {
 	update: function(frm) {
-        console.log("Its Working")
-        if(frm.doc.name){
+        if(frm.doc.__unsaved){
+            frappe.throw("Please save document first")
+        }else{
             frappe.call({
                 method : 'erp_pharma.erp_pharma.doctype.erp_setting.erp_setting.resume_purchase_order',
                 args : {

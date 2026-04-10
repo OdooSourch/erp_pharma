@@ -182,21 +182,34 @@ def get_purchase_value_for_supplier(docname=None):
         return reply
 
     query = """
-        SELECT name, grand_total
+        SELECT name, grand_total,creation
         FROM `tabPurchase Order`
         WHERE supplier = %s
           AND name != %s
           AND docstatus = 0
-        ORDER BY transaction_date DESC
+        ORDER BY creation DESC
         LIMIT 2
     """
 
     results = frappe.db.sql(query, (doc.supplier, doc.name), as_dict=True)
+
     current_value = doc.grand_total or 0
-    
     total_value = current_value + sum(row.grand_total for row in results)
 
-    allow_management = total_value >= 2500000
+    all_pos = results + [{
+        "name": doc.name,
+        "grand_total": current_value,
+        "creation": doc.creation
+    }]
+
+    all_pos_sorted = sorted(all_pos, key=lambda x: x["creation"], reverse=True)
+    latest_po = all_pos_sorted[0]["name"] 
+
+
+    allow_management = False
+    if total_value >= 2500000 and latest_po == doc.name:
+        allow_management = True
+    # allow_management = total_value >= 2500000
 
     return {
         "message": "Success",
@@ -207,7 +220,7 @@ def get_purchase_value_for_supplier(docname=None):
 
 
 #Cron to check the purchase order time and hold on it.
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def cron_purchase_order():
     reply = {}
     reply['message'] = ""
@@ -223,7 +236,6 @@ def cron_purchase_order():
                     current_time_obj = datetime.now()
                     time_difference = current_time_obj - creation_time_obj
                     if time_difference > timedelta(hours=24):
-                        frappe.log_error("Purchase Order",po['name'])
                         frappe.db.sql("""
                             UPDATE `tabPurchase Order`
                             SET `custom_tat_violation` = 1
