@@ -8,6 +8,7 @@ from frappe.model.document import Document
 class ERPSetting(Document):
 	pass
 
+#Update the visibility of purchase order
 @frappe.whitelist()
 def resume_purchase_order(docname=None):
 	reply = {}
