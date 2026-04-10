@@ -220,7 +220,7 @@ def get_purchase_value_for_supplier(docname=None):
 
 
 #Cron to check the purchase order time and hold on it.
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def cron_purchase_order():
     reply = {}
     reply['message'] = ""
