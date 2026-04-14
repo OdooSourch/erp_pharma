@@ -15,7 +15,7 @@ frappe.ui.form.on('Purchase Order', {
 
                 let allow_management = r.message.allow_management;
                 
-                if (allow_management && workflow_state !== "Approved By Management") {
+                if (allow_management && frm.doc.workflow_state !== "Approved") {
 
                     frm.dashboard.clear_headline();
 
