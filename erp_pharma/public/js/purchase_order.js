@@ -1,4 +1,4 @@
-frappe.ui.form.on('Purchase Order', { 
+frappe.ui.form.on('Purchase Order', {
     refresh: function(frm) {
         if (frm.doc.__unsaved) return;
 
@@ -15,6 +15,17 @@ frappe.ui.form.on('Purchase Order', {
 
                 let allow_management = r.message.allow_management;
                 
+                if (allow_management && workflow_state !== "Approved By Management") {
+
+                    frm.dashboard.clear_headline();
+
+                    frm.dashboard.set_headline_alert(
+                        "PO value exceeds ₹25,00,000. Sent for Management Approval. You will be notified once approved.",
+                        "orange"
+                    );
+
+                }
+
                 frappe.workflow.get_transitions(frm.doc).then((transitions) => {
 
                     frm.page.clear_actions_menu();
@@ -64,5 +75,5 @@ frappe.ui.form.on('Purchase Order', {
                 $('.btn-workflow').hide();
             }, 200);
         }
-    }
+    },
 })
