@@ -10,13 +10,13 @@ class ERPSetting(Document):
 
 #Update the visibility of purchase order
 @frappe.whitelist()
-def resume_purchase_order(docname=None):
+def resume_purchase_order():
 	reply = {}
 	reply['message'] = ""
 	try:
-		if not docname:
-			reply['message'] = "Please save document before resume the purchase order"
-			return reply
+		# if not docname:
+		# 	reply['message'] = "Please save document before resume the purchase order"
+		# 	return reply
 		
 		purchase_order = frappe.db.get_single_value("ERP Setting","purchase_order")
 		if purchase_order:
