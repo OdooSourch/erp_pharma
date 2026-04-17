@@ -17,7 +17,7 @@ def resume_purchase_order():
 		# if not docname:
 		# 	reply['message'] = "Please save document before resume the purchase order"
 		# 	return reply
-		
+
 		purchase_order = frappe.db.get_single_value("ERP Setting","purchase_order")
 		if purchase_order:
 			frappe.db.sql("""
@@ -25,6 +25,16 @@ def resume_purchase_order():
 				SET `custom_tat_violation` = 0
 				WHERE `name` = %s 	
 			""",(purchase_order))
+
+			po_log = frappe.get_doc({
+				"doctype": "PO Update Log",
+				"reference_doctype":"Purchase Order",
+				"reference_name": purchase_order,
+				"session_user": frappe.session.user,
+				"log_date": frappe.utils.now(),
+				"log_type": "TAT PO UPDATE"
+			})
+			po_log.insert(ignore_permissions=True)
 		reply['message'] = "Purchase Orders Updated Successfully.."
 		return reply
 	except Exception as e:
