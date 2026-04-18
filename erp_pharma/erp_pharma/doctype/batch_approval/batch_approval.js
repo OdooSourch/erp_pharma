@@ -2,6 +2,22 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("Batch Approval", {
+    setup : function(frm){
+        if (frm.fields_dict.raw_materials) {
+            frm.fields_dict.raw_materials.grid.cannot_add_rows = true;
+        }
+        if (frm.fields_dict.packing_materials) {
+            frm.fields_dict.packing_materials.grid.cannot_add_rows = true;
+        }
+    },
+    onload(frm) {
+        if (frm.fields_dict.raw_materials) {
+            frm.fields_dict.raw_materials.grid.cannot_add_rows = true;
+        }
+        if (frm.fields_dict.packing_materials) {
+            frm.fields_dict.packing_materials.grid.cannot_add_rows = true;
+        }
+    },
     refresh : function(frm){
         if (frm.fields_dict.raw_materials) {
             frm.fields_dict.raw_materials.grid.cannot_add_rows = true;
